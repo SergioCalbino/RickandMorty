@@ -7,7 +7,7 @@ module.exports = {
                cantidad++	
            }
        }
-   console.log( cantidad )      
+//    console.log( cantidad )      
    return cantidad
 // Necesito subi esta carpeta
 }}

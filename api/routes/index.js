@@ -68,8 +68,8 @@ router.get("/", async (req, res) => {
        let idChar = e.characters?.map( c => parseInt( ( c.slice(42) ) ) )
        console.log(idChar)
 
-        const locationCharacter =   axios(urlCharacter + idChar )
-        // console.log(locationCharacter.data)
+        const locationCharacter =  axios(urlCharacter + idChar )
+         console.log(locationCharacter.data)
 
         return {
             name: e.name,
@@ -129,8 +129,8 @@ router.get("/", async (req, res) => {
     }
 
     
-
-    res.send( respuesta )
+    
+    res.send( [respuesta] )
     
     
 } catch (error) {

@@ -3,15 +3,18 @@ import FindCharacter from "../helpers/FindCharacter";
 import FindEpisode from "../helpers/FindEpisode";
 import FindLocation from "../helpers/FindLocation";
 import '../App.css'
+import { fetchBack } from "../helpers/fetchBack";
 
 const Index = () => {
   const { reqCharacter, letrasCharacter } = FindCharacter();
   const { reqLocation, letrasLocation } = FindLocation();
   const { reqEpisode, letrasEpisode } = FindEpisode();
+  const { requestFetch } = fetchBack();
 
   const [countCharacter, setCountCharacter] = useState();
   const [countLocation, setCountLocation] = useState();
   const [countEpisode, setCountEpisode] = useState();
+  const [show, setShow] = useState();
 
   const clickCharacter = () => {
     setCountCharacter( letrasCharacter );
@@ -24,6 +27,10 @@ const Index = () => {
   const clickEpisode = () => {
     setCountEpisode( letrasEpisode );
   };
+
+  const clickShow = () => {
+    setShow( requestFetch )
+  }
 
   return (
     <>
@@ -38,9 +45,14 @@ const Index = () => {
 
       <button onClick={ reqEpisode }> Episode </button>
       <button onClick={ clickEpisode }> letras Episode </button>
+      <button onClick={ clickShow }> show </button>
 
         
       <div> 
+
+      <div>
+        { show }
+      </div>
       
       {
         countCharacter ? JSON.stringify({ 
