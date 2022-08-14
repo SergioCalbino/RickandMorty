@@ -1,6 +1,6 @@
 "use strict";
 
-const { findChar } = require('../utils/find.js')
+const { findChar, agregoLocation } = require('../utils/find.js')
 
 const express = require("express");
 const axios = require("axios");
@@ -62,75 +62,67 @@ router.get("/", async (req, res) => {
 
     let isTrueOrFalse = ms < 3000 ? true : false
 
-    // Comienza la segunda parte del ejercicio
-
-    const infoEpisode =  await Promise.all( respEpisode.data.map((e) => {
-       let idChar = e.characters?.map( c => parseInt( ( c.slice(42) ) ) )
-       console.log(idChar)
-
-        const locationCharacter =  axios(urlCharacter + idChar )
-         console.log(locationCharacter.data)
-
-        return {
-            name: e.name,
-            episode: e.episode,
-           locations: locationCharacter.data?.map( loc => loc.origin.name ).reduce( (ac, b) =>{
-            if( !ac.includes( b ) ) {
-                 ac.push(b)
-             
-             }
-             return ac
-         
-           },[] ) 
-
-        }
-
-   } ))
-
-//    let arrPromise = [];
-//    for (let i = 0; i < infoEpisode.length; i++) {
-//     arrPromise.push( axios(urlCharacter + infoEpisode[i].characters) )
-//     }
-
-//     const resultPromise = Promise.all( arrPromise )
-
-   
-
-
-
-
-    const respuesta = 
+    const respuesta = [
         {
         excercise_name: 'Char counter',
         time: finalTime,
         in_time: isTrueOrFalse,
         results: [
-            {char: 'l', count: findChar( locationName, 'l'  ), resource: 'location' },
+            { char: 'l', count: findChar( locationName, 'l'  ), resource: 'location' },
             
-            {char: 'c', count: findChar( charName, 'c' ), resource: 'character'},
+            { char: 'c', count: findChar( charName, 'c' ), resource: 'character'},
             { char: 'e', count:  findChar ( episodeName, 'e' ), resource: 'episode'},
-            { infoEpisode }
+            
             
         ]
-    }
-    
-        
-        const respuesta2 = {
-        excercise_name: 'Episode locations',
-        time: finalTime,
-        in_time: isTrueOrFalse,
-        results: [
-           {
-            name: infoEpisode[0].name,
+    }]
 
-           }
-            
-        ]
-    }
+    // Comienza la segunda parte del ejercicio
 
+    let inicioEj2 = performance.now();
+    let promesas = [];
+
+    const ej2 = respEpisode.data.map((e) => {
+      let idChar = e.characters?.map((c) => parseInt(c.slice(42)));
+      const locationCharacter = axios(urlCharacter + idChar);
+      promesas.push(locationCharacter);
+      return {
+        name: e.name,
+        episode: e.episode,
+      };
+    });
+
+    const info = await Promise.all(promesas);
+    const lugares = info.map((loc) =>
+      loc.data
+        .map((l) => l.origin.name)
+        .reduce((ac, b) => {
+          if (!ac.includes(b)) {
+            ac.push(b);
+          }
+          return ac;
+        }, [])
+    );
+    let agregoLocationsEpisodios = agregoLocation(ej2, lugares);
+    let terminoEj2 = performance.now();
+    let msEj2 = terminoEj2 - inicioEj2;
+    let secEj2 = Math.floor((msEj2 / 1000) % 60);
+    let restoMsEj2 = msEj2 - secEj2 * 1000;
+
+    let resultEpisodeLocations = {
+      exercise_name: "Episode locations",
+      time: secEj2 + "s " + restoMsEj2 + "ms ",
+      in_time: secEj2 < 3 ? true : false,
+
+      results: agregoLocationsEpisodios,
+    };
+
+
+const respFinal = respuesta.concat(resultEpisodeLocations);
     
     
-    res.send( [respuesta] )
+    
+    res.send(  respFinal  )
     
     
 } catch (error) {
