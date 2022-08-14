@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import { BrowserRouter as Router } from "react-router-dom";
 
 import reportWebVitals from './reportWebVitals';
 import Counters from '../src/Counters/index'
@@ -8,7 +9,9 @@ import Counters from '../src/Counters/index'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+  <Router>
     <Counters />
+    </Router>
   </React.StrictMode>
 );
 

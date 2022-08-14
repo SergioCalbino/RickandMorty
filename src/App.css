@@ -71,6 +71,7 @@ body {
   border: none;
   cursor: pointer;
   
+  
 }
 
 .btn-search:hover {
@@ -191,7 +192,16 @@ body {
 
 .order {
   display: flex;
-  flex-direction: row;
+  flex-direction:column;
   text-align: center;
-  justify-content: space-between;
+  justify-content:center;
+  border-radius: 3px;
+ 
+}
+
+.a {
+  display: inline;
+  width: 50px;
+  height: 50px;
+
 }

@@ -12,9 +12,7 @@ const urlCharacter = "https://rickandmortyapi.com/api/character/";
 const urlLocation = "https://rickandmortyapi.com/api/location/";
 const urlEpisode = "https://rickandmortyapi.com/api/episode/";
 
-// router.get('/', async (req, res) => {
-//     res.send('Hola mundo')
-// });
+
 
 router.get("/", async (req, res) => {
 
@@ -87,13 +85,16 @@ router.get("/", async (req, res) => {
       const locationCharacter = axios(urlCharacter + idChar);
       promesas.push(locationCharacter);
       return {
-        name: e.name,
-        episode: e.episode,
-      };
+          name: e.name,
+          episode: e.episode,
+        };
     });
+    
+    
 
     const info = await Promise.all(promesas);
-    const lugares = info.map((loc) =>
+    
+    const lugares = info.map((loc) => 
       loc.data
         .map((l) => l.origin.name)
         .reduce((ac, b) => {
