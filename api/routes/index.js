@@ -1,6 +1,6 @@
-"use strict";
+// "use strict";
 
-const { findChar, agregoLocation } = require('../utils/find.js')
+const { findChar, addLocation } = require("../utils/find.js");
 
 const express = require("express");
 const axios = require("axios");
@@ -12,89 +12,81 @@ const urlCharacter = "https://rickandmortyapi.com/api/character/";
 const urlLocation = "https://rickandmortyapi.com/api/location/";
 const urlEpisode = "https://rickandmortyapi.com/api/episode/";
 
-
-
 router.get("/", async (req, res) => {
-
-
   try {
-
     let inicio = performance.now();
-    
+
     const arrayCharacter = [];
     for (let i = 1; i < 827; i++) {
-        arrayCharacter.push(i);
+      arrayCharacter.push(i);
     }
     const respChar = await axios(urlCharacter + arrayCharacter);
-    
+
     const charName = respChar.data.map((ch) => ch.name).join("");
-    
-    
-    
+
     const arrayEpisode = [];
-    
+
     for (let i = 1; i < 51; i++) {
-        arrayEpisode.push(i);
+      arrayEpisode.push(i);
     }
-    
-    const respEpisode = await axios( urlEpisode + arrayEpisode )
-    const episodeName = respEpisode.data.map((ch) => ch.name).join("")
+
+    const respEpisode = await axios(urlEpisode + arrayEpisode);
+    const episodeName = respEpisode.data.map((ch) => ch.name).join("");
     // res.json( episodeName.concat( charName ) )
-    
+
     const arrayLocation = [];
-    
+
     for (let i = 1; i < 127; i++) {
       arrayLocation.push(i);
     }
-    
-    const respLocation = await axios( urlLocation + arrayLocation )
-    const locationName = respLocation.data.map((ch) => ch.name).join("")
-    
 
+    const respLocation = await axios(urlLocation + arrayLocation);
+    const locationName = respLocation.data.map((ch) => ch.name).join("");
 
     let final = performance.now();
-    let ms = ( final - inicio )
+    let ms = final - inicio;
     let sec = Math.floor((ms / 1000) % 60);
-    let msf = ms - ( sec * 1000 )
-    let finalTime =   ( sec + 's   ' + msf + 'ms  ');
+    let msf = ms - sec * 1000;
+    let finalTime = sec + "s   " + msf + "ms  ";
 
-    let isTrueOrFalse = ms < 3000 ? true : false
+    let isTrueOrFalse = ms < 3000 ? true : false;
 
     const respuesta = [
-        {
-        excercise_name: 'Char counter',
+      {
+        excercise_name: "Char counter",
         time: finalTime,
         in_time: isTrueOrFalse,
         results: [
-            { char: 'l', count: findChar( locationName, 'l'  ), resource: 'location' },
-            
-            { char: 'c', count: findChar( charName, 'c' ), resource: 'character'},
-            { char: 'e', count:  findChar ( episodeName, 'e' ), resource: 'episode'},
-            
-            
-        ]
-    }]
+          {
+            char: "l",
+            count: findChar(locationName, "l"),
+            resource: "location",
+          },
+
+          { char: "c", count: findChar(charName, "c"), resource: "character" },
+          { char: "e", count: findChar(episodeName, "e"), resource: "episode" },
+        ],
+      },
+    ];
 
     // Comienza la segunda parte del ejercicio
 
     let inicioEj2 = performance.now();
-    let promesas = [];
+    let arregloPromesas = [];
 
-    const ej2 = respEpisode.data.map((e) => {
+    const episodes = respEpisode.data.map((e) => {
       let idChar = e.characters?.map((c) => parseInt(c.slice(42)));
       const locationCharacter = axios(urlCharacter + idChar);
-      promesas.push(locationCharacter);
+      arregloPromesas.push(locationCharacter);
       return {
-          name: e.name,
-          episode: e.episode,
-        };
+        name: e.name,
+        episode: e.episode,
+      };
     });
-    
-    
 
-    const info = await Promise.all(promesas);
-    
-    const lugares = info.map((loc) => 
+    const allPromises = await Promise.all(arregloPromesas);
+
+    const locations = allPromises.map((loc) =>
       loc.data
         .map((l) => l.origin.name)
         .reduce((ac, b) => {
@@ -104,7 +96,7 @@ router.get("/", async (req, res) => {
           return ac;
         }, [])
     );
-    let agregoLocationsEpisodios = agregoLocation(ej2, lugares);
+    let addLocationsAndEpisodes = addLocation(episodes, locations);
     let terminoEj2 = performance.now();
     let msEj2 = terminoEj2 - inicioEj2;
     let secEj2 = Math.floor((msEj2 / 1000) % 60);
@@ -115,21 +107,13 @@ router.get("/", async (req, res) => {
       time: secEj2 + "s " + restoMsEj2 + "ms ",
       in_time: secEj2 < 3 ? true : false,
 
-      results: agregoLocationsEpisodios,
+      results: addLocationsAndEpisodes,
     };
 
+    const finalResp = respuesta.concat(resultEpisodeLocations);
 
-const respFinal = respuesta.concat(resultEpisodeLocations);
-    
-    
-    
-    res.send(  respFinal  )
-    
-    
-} catch (error) {
+    res.send(finalResp);
+  } catch (error) {
     console.log(error);
-}
-
+  }
 });
-
-

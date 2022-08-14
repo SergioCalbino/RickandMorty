@@ -7,27 +7,17 @@
                cantidad++	
            }
        }
-//    console.log( cantidad )      
+     
    return cantidad
     },
-// Necesito subi esta carpeta
 
-
-
-    // countLetra: (str, char) => {
-    //   let cantidad = 0;
-    //   for (let i = 0; i < str.length; i++) {
-    //     if (str[i].toLowerCase() === char) {
-    //       cantidad++;
-    //     }
-    //   }
-    //   return cantidad;
-    // },
-    idGenerator: (array, acumulador) => {
+ idGenerator: (array, acumulador) => {
       for (let i = 0; i < array; i++) {
         acumulador.push(i + 1);
       }
     },
+
+
     inTime: (segundos) => {
       if (segundos < 3) return true;
       return false;
@@ -40,7 +30,7 @@
       return rta;
     },
     
-    agregoLocation: (arra1, arra2) => {
+    addLocation: (arra1, arra2) => {
       let respuesta = [];
   
       for (let i = 0; i < arra1.length; i++) {
