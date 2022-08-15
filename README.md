@@ -1,3 +1,25 @@
+En la carpet API se encuentran las peticiones a la API de Rick And Morty.
+El mencionado Back fue armado mediante la utilziacion de Node.JS, con el Framework de Express.Js
+
+Como se puede ver, se compone de una sola ruta que efectua las petciones a los 3 endPoints distintos: Characters, Episodes y Locations. (Todos del endpoint multiple)
+
+En la carpeta routes se encuentra el index que efectua lo arriba mencionado.
+La carpeta utils tiene las funciones axuliares para ayudar a realizar las peticiones a la API y mostrar un codigo mas legible.
+
+Para levartar el back se deben ejecutar los siguientes comandos:
+
+dentro de la carpeta API: npm run nodemon. Dado que en archivo index.js tenemos un escuchador, cada cambio realizado sera escuchado y actaulizará los cambios efectuados.
+
+
+En la carpeta SRC se encuentra el Front. Éste fue construido mediante React.Js.
+Dentro de la carpeta Counter se encuetnra el archivo index.js en el cual se encuentra el componente que renderiza una imagen y un boton el cual nos remite a la resolución del ejercicio.
+
+La carpeta Helpers contiene funciones que por el momento no son de utilidad para el presente ejercicio.
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
