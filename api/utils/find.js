@@ -11,24 +11,7 @@
    return cantidad
     },
 
- idGenerator: (array, acumulador) => {
-      for (let i = 0; i < array; i++) {
-        acumulador.push(i + 1);
-      }
-    },
-
-
-    inTime: (segundos) => {
-      if (segundos < 3) return true;
-      return false;
-    },
-    converTime: (inicio, fin) => {
-      let ms = fin - inicio;
-      let sec = Math.floor((ms / 1000) % 60);
-      let restoMs = ms - sec * 1000;
-      let rta = { sec, restoMs, in_time: sec < 3 ? true : false };
-      return rta;
-    },
+ 
     
     addLocation: (arra1, arra2) => {
       let respuesta = [];
